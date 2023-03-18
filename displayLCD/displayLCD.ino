@@ -4,13 +4,14 @@
 // Definir los pines de los botones y los LEDs
 #define buttonPin1 2 //seleccion
 #define buttonPin2 3 //confirmacion
+
 #define ledPin1 4
 #define ledPin2 5
 #define ledPin3 6
 // Crear una instancia del display LCD
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
-// Definir las opciones del menú
+//Definir las opciones del menú
 char option1[] = "1.Medir     ";
 char option2[] = "2.Calibrar  ";
 char option3[] = "3.Inicializar";
@@ -37,11 +38,10 @@ void setup(){
     lcd.setCursor(7,0);
     lcd.print("Menu!");
     //mostrar el primer elemento del menu en el display
-
     
     lcd.setCursor(0,1);
     lcd.print(options[0]);
-    digitalWrite(ledPin1, HIGH);
+    digitalWrite(ledPin1, LOW);
 }
 
 void loop(){
@@ -73,36 +73,55 @@ void loop(){
   }
 
 //verificamos si se ha pulsado el segundo boton
+
   if(digitalRead(buttonPin2) == LOW){
     //Mostrar la opcion seleccionada en el display
+
+    //pinMode(buttonPin2);
     lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("Seleccionaste:");
     lcd.setCursor(0,1);
-    lcd.print(options[currentOption]);
+    lcd.print(options[currentOption]);      
 
-    //Encender el led correspondiente a la opcion actual
+    //pinMode(buttonPin2) == HIGH;
+    switchRe();
+  }
+}
+
+void switchRe(){
     switch(currentOption) {
       case 0:
+      led1();
+        break;
+      case 1:
+      led2();
+        break;
+      case 2:
+      led3();
+        break;
+      default:
+        break;
+     }
+}
+
+void led1(){
         digitalWrite(ledPin1, LOW);
         delay(100);
         digitalWrite(ledPin2, HIGH);
         digitalWrite(ledPin3, HIGH);
-        break;
-      case 1:
+}
+void led2(){
         digitalWrite(ledPin1, HIGH);
         digitalWrite(ledPin2, LOW);
         delay(100); 
         digitalWrite(ledPin3, HIGH);
-        break;
-      case 2:
+}
+void led3(){
         digitalWrite(ledPin1, HIGH);
         digitalWrite(ledPin2, HIGH);
         digitalWrite(ledPin3, LOW);
-        delay(100);
-        break;
-      default:
-        break;
-    }
-  }
+        delay(100); 
 }
+
+    
