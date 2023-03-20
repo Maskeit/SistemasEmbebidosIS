@@ -69,8 +69,12 @@ void loop(){
     } else if(currentOption == 2){
       digitalWrite(ledPin3,HIGH);
     }
-    delay(0);
+    delay(250);
   }
+  verBoton2();
+}
+
+void verBoton2(){
 
 //verificamos si se ha pulsado el segundo boton
 
@@ -83,13 +87,11 @@ void loop(){
     lcd.print("Seleccionaste:");
     lcd.setCursor(0,1);
     lcd.print(options[currentOption]);      
-
-    //pinMode(buttonPin2) == HIGH;
     switchRe();
-  }
+  }  
 }
 
-void switchRe(){
+int switchRe(){
     switch(currentOption) {
       case 0:
       led1();
@@ -103,6 +105,7 @@ void switchRe(){
       default:
         break;
      }
+     return 0;
 }
 
 void led1(){
