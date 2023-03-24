@@ -84,9 +84,13 @@ void readNumber() {
   number = 0;
   lcd.clear();
   lcd.print("Ingrese numero:");
-  while (count < 4) {
+  switch(key){
+        case 'A' : /*Opción 1*/ break; 
+        case 'B' : /*Opción 2*/ break; 
+        case 'C' : /*Opción 3*/ break; 
+        while (count < 1) {
     key = keypad.getKey();
-    if (key != NO_KEY && isDigit(key)) {
+    if (isDigit(key)) {
       lcd.setCursor(count, 1);
       lcd.write(key);
       number = number * 10 + (key - '0');
@@ -94,4 +98,6 @@ void readNumber() {
     }   
   }
   delay(500);
+  }
+  
 }
