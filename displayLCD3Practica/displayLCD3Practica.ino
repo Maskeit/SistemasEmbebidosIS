@@ -30,28 +30,53 @@ void setup() {
   lcd.setCursor(0, 0);
   lcd.print("Presione una tecla");
 
+  // Inicializamos el monitor serie
+  Serial.begin(9600);
 }
 
 void loop() {
-  
- //Mostrar el número ingresado en el display
+ //llamar a la funcion que nos pide la accion 
     readAction();
-    readNumber();
-    lcd.clear();
-    lcd.setCursor(0, 0);
-    lcd.print("Se ha guardado");
-    lcd.setCursor(0, 1);
-    lcd.print("su numero!");
-    lcd.setCursor(11, 1);
-    lcd.print("1111");
-    delay(5000);
 }
+
+void readAction() {
+  char key = NO_KEY; // inicializamos key con NO_KEY
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("'A' to Read");
+  lcd.setCursor(0, 1);
+  lcd.print("'B' to Save");
+
+  while (true) {
+    key = keypad.getKey();
+    if (key != NO_KEY) {
+      if (key == 'A') {
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("Presiono A");
+        delay(1000);
+        readNumber();
+        break;
+      }
+      else if (key == 'B') {
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("Presiono B");
+        delay(1000);
+        saveNumber();
+        break;
+      }
+    }
+    delay(1000);
+  }
+}
+
 void readNumber() {
   char key;
   int count = 0;
   number = 0;
   lcd.clear();
-  lcd.print("Ingrese numero:");
+  lcd.print("Ingrese Passwd:");
   while (count < 4) {
     key = keypad.getKey();
     if (key != NO_KEY && isDigit(key)) {
@@ -62,25 +87,34 @@ void readNumber() {
     }   
   }
   delay(500);
+  int savedNumber = EEPROM.read(0); // leer el número guardado en la dirección de memoria 0
+  if (number == savedNumber) {
+    lcd.clear();
+    lcd.print("Numero Correcto!");
+    lcd.setCursor(0,1);
+  } else {
+    lcd.clear();
+    lcd.print("Numero Incorrecto!");
+    lcd.setCursor(0,1);
+  }
+  delay(2000); // Mostrar el resultado durante 2 segundos antes de borrar la pantalla
+  lcd.clear(); // Borrar la pantalla
+
+  // Mostrar el número guardado en la EEPROM en el monitor serie
+  Serial.println(savedNumber);
 }
 
-void readAction(){
+
+
+void saveNumber(){
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("IngreseNClave");
+  int addr = 0;
   char key;
   int count = 0;
   number = 0;
-  lcd.clear();
-  lcd.setCursor(0, 0);
-  lcd.print("'A' to Read");
-  lcd.setCursor(0, 1);
-  lcd.print("'B' to Save");
-  
-  if(key == 'A'){
-//    saveNumber();
-    lcd.clear();
-    lcd.setCursor(0, 0);
-    lcd.print("Presiono A");
-  }else{
-     while (count < 1) {
+      while (count < 4) {
       key = keypad.getKey();
       if (key != NO_KEY && isDigit(key)) {
         lcd.setCursor(count, 1);
@@ -89,6 +123,15 @@ void readAction(){
         count++;
       }   
     }
+    delay(500);
+// Guardar el número en la EEPROM
+  for (int i = 3; i >= 0; i--) {
+    EEPROM.write(addr+i, (number >> (i * 8)) & 0xFF);
   }
-  delay(100);
+  
+  // Mostrar un mensaje de confirmación
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("Clave guardada");
+  delay(1000);
 }

@@ -14,9 +14,6 @@ char keys[ROWS][COLS] = {
 byte rowPins[ROWS] = {9, 8, 7, 6}; // Conectamos las filas del teclado a los pines digitales del 6 al 9
 byte colPins[COLS] = {5, 4, 3, 2}; // Conectamos las columnas del teclado a los pines digitales del 2 al 5
 
-#define buttonPin1 10
-#define buttonPin2 11
-
 // Creamos el objeto keypad para manejar el teclado matricial
 Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 
@@ -30,9 +27,6 @@ void setup() {
   int persona1 = 2001;
   int persona2 = 2003;
   int persona3 = 1945;
-  // Configuramos el modo de los pines
-  pinMode(13, OUTPUT); // Conectamos un LED al pin 13 para comprobar que el código está funcionando
-  digitalWrite(13, HIGH); // Encendemos el LED
   
   // Inicializamos el display LCD
   lcd.init();
@@ -44,16 +38,6 @@ void setup() {
 
 
 void loop() {
-  
-  pinMode(buttonPin1, INPUT_PULLUP);
-  pinMode(buttonPin2, INPUT_PULLUP);
-  if (digitalRead(buttonPin1) == LOW) {
-    // Cambiar a la opción siguiente
-    // ...
-  }
-
-
-  if (digitalRead(buttonPin2) == HIGH) {
     // Leer el número de 4 dígitos
     readNumber();
 
@@ -70,7 +54,6 @@ void loop() {
       lcd.print("No autorizado");
       delay(5000); 
     }
-  }
 }
 void saveNumber(){
   char key;
