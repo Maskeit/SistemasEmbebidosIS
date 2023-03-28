@@ -87,7 +87,7 @@ void readNumber() {
     }   
   }
   delay(500);
-  int savedNumber = EEPROM.read(0); // leer el número guardado en la dirección de memoria 0
+  long savedNumber = readLongFromEEPROM(100); // leer el número guardado en la dirección de memoria 0
   if (number == savedNumber) {
     lcd.clear();
     lcd.print("Numero Correcto!");
@@ -101,11 +101,26 @@ void readNumber() {
   lcd.clear(); // Borrar la pantalla
 
   // Mostrar el número guardado en la EEPROM en el monitor serie
+ 
   Serial.println(savedNumber);
+  
 }
 
+void writeLongIntoEEPROM(int address, long number)
+{ 
+  EEPROM.write(address, (number >> 24) & 0xFF);
+  EEPROM.write(address + 1, (number >> 16) & 0xFF);
+  EEPROM.write(address + 2, (number >> 8) & 0xFF);
+  EEPROM.write(address + 3, number & 0xFF);
+}
 
-
+long readLongFromEEPROM(int address)
+{
+  return ((long)EEPROM.read(address) << 24) +
+         ((long)EEPROM.read(address + 1) << 16) +
+         ((long)EEPROM.read(address + 2) << 8) +
+         (long)EEPROM.read(address + 3);
+}
 void saveNumber(){
   lcd.clear();
   lcd.setCursor(0, 0);
@@ -125,13 +140,17 @@ void saveNumber(){
     }
     delay(500);
 // Guardar el número en la EEPROM
-  for (int i = 3; i >= 0; i--) {
-    EEPROM.write(addr+i, (number >> (i * 8)) & 0xFF);
-  }
+   Serial.begin(9600);
   
-  // Mostrar un mensaje de confirmación
+  writeLongIntoEEPROM(100, number);
+  long number = readLongFromEEPROM(100);
+  
+  Serial.print("Number: ");
+  Serial.println(number);
+
+    // Mostrar un mensaje de confirmación
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print("Clave guardada");
   delay(1000);
-}
+}  
