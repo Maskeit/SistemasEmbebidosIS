@@ -1,0 +1,24 @@
+#include <EEPROM.h>
+
+int a = 0; //'a' es la dirección
+int value;
+
+void setup() {
+  Serial.begin(9600); //()bits por segundo
+}
+
+void loop() {
+  value = EEPROM.read(a);
+        //igualamos 'a' a value
+  Serial.print(a);
+  Serial.print("\t");
+  Serial.print(value);
+  Serial.println();
+
+  a = a + 1;
+
+  if (a == 255)
+    a = 0;
+    
+  delay(500); //milisegundos
+}
