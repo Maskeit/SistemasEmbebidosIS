@@ -221,7 +221,7 @@ void readNumber() {
     lcd.setCursor(0,1);
     lcd.print("Puede Pasar");
     digitalWrite(ledPinGreen,HIGH);
-    delay(250);
+    delay(2000);
     digitalWrite(ledPinGreen,LOW);
 //    delay(2000)
   } else {
