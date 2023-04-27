@@ -27,67 +27,57 @@ void setup() {
 }
 
 void loop() {
-  if (digitalRead(buttonON) == LOW) {
-    digitalWrite(white, LOW);
-    digitalWrite(red, HIGH);
-    delay(500);
-    digitalWrite(red, LOW);
-    digitalWrite(green, HIGH);
-    delay(500);
-    digitalWrite(green, LOW);
-    digitalWrite(blue, HIGH);
-    delay(500);
-    digitalWrite(blue, LOW);
-    digitalWrite(white, HIGH);
-    
-    lcd.clear();
-    lcd.setCursor(0, 0);
-    lcd.print("Cargando..");
+  if (digitalRead(buttonON) == LOW && digitalRead(white) == LOW) {
+    encender();
+  }
+  if (digitalRead(buttonOFF) == LOW && digitalRead(white) == HIGH) {
+    apagar();
+  }
+}
 
-    // Esperar 5 segundos
-    unsigned long start_time = millis();
-    while (millis() - start_time < 5000) {
-      if (digitalRead(buttonON) == LOW) {
-        lcd.clear();
-        lcd.setCursor(0, 0);
-        lcd.print("Se ha pulsado");
-        digitalWrite(white, LOW);
-        digitalWrite(red, LOW);
-        digitalWrite(green, LOW);
-        digitalWrite(blue, LOW);
-        while (digitalRead(buttonON) == LOW) {
-          // Esperar a que se suelte el botón
-        }
-        return;
-      }
-      if (digitalRead(buttonOFF) == LOW) {
+void apagar(){
         lcd.clear();
         lcd.setCursor(0, 0);
         lcd.print("Apagando..");
-        digitalWrite(white, LOW);
-        digitalWrite(red, HIGH);
-        digitalWrite(green, HIGH);
-        digitalWrite(blue, HIGH);
-        delay(1000);
-        digitalWrite(red, LOW);
-        digitalWrite(green, LOW);
-        digitalWrite(blue, LOW);
-        digitalWrite(white, LOW);
+    for (int i = 0; i < 2; i++) {
+      digitalWrite(green, HIGH);
+      delay(500);
+      digitalWrite(green, LOW);
+      digitalWrite(red, HIGH);
+      delay(500);
+      digitalWrite(red, LOW);
+      digitalWrite(blue, HIGH);
+      delay(500);
+      digitalWrite(blue, LOW);
+    }
+        digitalWrite(white, LOW);//se apaga el led
+        
         lcd.clear();
         lcd.setCursor(0, 0);
         lcd.print("Presiona para");
         lcd.setCursor(0, 1); 
         lcd.print("Encender");   
-        while (digitalRead(buttonOFF) == LOW) {
-          // Esperar a que se suelte el botón
-        }
-        return;
-      }
+}
+void encender(){
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("Cargando..");
+    
+    for (int i = 0; i < 2; i++) {
+      digitalWrite(blue, HIGH);
+      delay(500);
+      digitalWrite(blue, LOW);
+      digitalWrite(red, HIGH);
+      delay(500);
+      digitalWrite(red, LOW);
+      digitalWrite(green, HIGH);
+      delay(500);
+      digitalWrite(green, LOW);
     }
+    digitalWrite(white, HIGH);
 
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("Encendido");
     delay(2000);
-  }
 }

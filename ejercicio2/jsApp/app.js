@@ -23,7 +23,7 @@ const app = {
         fetch(this.urlPosts + urlaux)
             .then(resp => resp.json())
             .then(posts => {
-                /*Aqui las instrucciones de lo que se hara con las instrucciones*/ 
+                /*Aqui las instrucciones de lo que se hara con las publicaciones*/ 
                 for(let post of posts){
 
                    let autor =( typeof r[post.userId-1] !== "undefined" ? r[post.userId-1].name : r.name ) ;

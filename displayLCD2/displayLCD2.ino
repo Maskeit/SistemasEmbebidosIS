@@ -40,7 +40,6 @@ void setup() {
 void loop() {
     // Leer el número de 4 dígitos
     readNumber();
-
     // Mostrar el número ingresado en el display
     if(number == 2001 or number == 1492){
     lcd.clear();
